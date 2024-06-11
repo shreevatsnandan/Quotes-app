@@ -1,23 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Navbar';
+import QuotesDashboard from './components/QuotesDashboard';
+import { useState } from 'react';
+import { wishlistContext } from './context/wishlistContext';
+import WishlistQuotes from './components/WishlistQuotes';
 
 function App() {
+  const [favorites, setFavorites] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <wishlistContext.Provider value={{ favorites, setFavorites }}>
+      <Navbar openDialog={openDialog} />
+        <QuotesDashboard />
+        {isDialogOpen && <WishlistQuotes closeDialog={closeDialog} />}
+      </wishlistContext.Provider>
     </div>
   );
 }
